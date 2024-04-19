@@ -17,6 +17,40 @@ user = Table(
     Column('is_verified', Boolean, default=False, nullable=False)
 )
 
+
+
+
+university = Table(
+    'university',
+    metadata,
+    Column('id', Integer, autoincrement=True, primary_key=True),
+    Column('name', String),
+    Column('image', String, nullable=True),
+    Column('user_id', Integer, ForeignKey(user.c.id))
+)
+faculty = Table(
+    'faculty',
+    metadata,
+    Column('id', Integer, autoincrement=True, primary_key=True),
+    Column('name', String),
+    Column('university_id', Integer, ForeignKey(university.c.id))
+)
+department = Table(
+    'department',
+    metadata,
+    Column('id', Integer, autoincrement=True, primary_key=True),
+    Column('name', String),
+    Column('faculty_id', Integer, ForeignKey(faculty.c.id))
+)
+
+group = Table(
+    'group',
+    metadata,
+    Column('id', Integer, autoincrement=True, primary_key=True),
+    Column('name', String),
+    Column('course', String),
+    Column('department_id', Integer, ForeignKey(department.c.id))
+)
 student = Table(
     'student',
     metadata,
@@ -26,40 +60,6 @@ student = Table(
     Column('patronymic', String, nullable=True),
     Column('score', Integer),
     Column('image', String, nullable=True),
-    Column('user_id', Integer, ForeignKey('user.id')),
-    Column('group_id', Integer, ForeignKey('group.id'))
-)
-
-group = Table(
-    'group',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('course', String),
-    Column('department_id', Integer, ForeignKey('department.id'))
-)
-
-department = Table(
-    'department',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('faculty_id', Integer, ForeignKey('faculty.id'))
-)
-
-faculty = Table(
-    'faculty',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('university_id', Integer, ForeignKey('university.id'))
-)
-
-university = Table(
-    'university',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('image', String, nullable=True),
-    Column('user_id', Integer, ForeignKey('user.id'))
+    Column('user_id', Integer, ForeignKey(user.c.id)),
+    Column('group_id', Integer, ForeignKey(group.c.id))
 )
