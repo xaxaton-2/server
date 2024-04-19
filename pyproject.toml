@@ -9,6 +9,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 alembic = "^1.13.1"
+flake8 = "^7.0.0"
+fastapi-users = {extras = ["sqlalchemy"], version = "^13.0.0"}
 
 
 [build-system]
