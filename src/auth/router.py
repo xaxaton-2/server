@@ -6,6 +6,6 @@ from src.auth import schemas
 router = fastapi.APIRouter()
 
 
-@router.post("register/student/", response_model=schemas.StudentCreate, tags=["reg_student"])
+@router.post("/register/student/", response_model=schemas.StudentCreate, tags=["reg_student"])
 def register_student(user: schemas.StudentCreate):
-    print(user)
+    return user
