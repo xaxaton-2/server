@@ -1,65 +1,30 @@
-from sqlalchemy import (
-    MetaData, Integer, Table, String,
-    Boolean, Column, ForeignKey
-)
+from datetime import datetime
+from sqlalchemy import MetaData, Boolean, Integer, \
+    String, ForeignKey, TIMESTAMP, Table, Column, VARCHAR, JSON
 
 metadata = MetaData()
+
+
+role = Table(
+    'role',
+    metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('title', VARCHAR(255), nullable=False),
+    Column('permissions', JSON),
+)
 
 user = Table(
     'user',
     metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('email', String, unique=True, nullable=False),
-    Column('hashed_password', String, nullable=False),
+    Column('name', VARCHAR(255), nullable=False),
+    Column('phone', VARCHAR(50), nullable=True),
+    Column('registered_at', TIMESTAMP, default=datetime.utcnow),
+    Column('role_id', Integer, ForeignKey(role.c.id), default=1),
 
+    Column('email', VARCHAR(255), nullable=False),
+    Column('hashed_password', String, nullable=False),
     Column('is_active', Boolean, default=True, nullable=False),
     Column('is_superuser', Boolean, default=False, nullable=False),
     Column('is_verified', Boolean, default=False, nullable=False)
-)
-
-student = Table(
-    'student',
-    metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String, nullable=False),
-    Column('surname', String, nullable=False),
-    Column('patronymic', String, nullable=True),
-    Column('score', Integer),
-    Column('image', String, nullable=True),
-    Column('user_id', Integer, ForeignKey('user.id')),
-    Column('group_id', Integer, ForeignKey('group.id'))
-)
-
-group = Table(
-    'group',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('course', String),
-    Column('department_id', Integer, ForeignKey('department.id'))
-)
-
-department = Table(
-    'department',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('faculty_id', Integer, ForeignKey('faculty.id'))
-)
-
-faculty = Table(
-    'faculty',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('university_id', Integer, ForeignKey('university.id'))
-)
-
-university = Table(
-    'university',
-    metadata,
-    Column('id', Integer, autoincrement=True, primary_key=True),
-    Column('name', String),
-    Column('image', String, nullable=True),
-    Column('user_id', Integer, ForeignKey('user.id'))
 )

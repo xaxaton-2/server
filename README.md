@@ -18,3 +18,13 @@ alembic revision --autogenerate -m "Create DB"
 
 alembic upgrade head
 ```
+__4. Задать секреты__
+Создать .env в корне с следующим наполнением:
+```
+SECRET_KEY = example
+```
+
+__5. Запустить проект__
+```
+uvicorn src.main:app --reload
+```
