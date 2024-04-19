@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from src.auth.model import metadata as metadata_auth
+from src.auth.models import metadata as metadata_auth
 
 
 # this is the Alembic Config object, which provides
