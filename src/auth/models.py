@@ -1,4 +1,7 @@
-from sqlalchemy import MetaData, Integer, Table, String, Boolean, Column, ForeignKey
+from sqlalchemy import (
+    MetaData, Integer, Table, String,
+    Boolean, Column, ForeignKey
+)
 
 metadata = MetaData()
 
