@@ -1,0 +1,15 @@
+[tool.poetry]
+package-mode = false
+name = "server"
+version = "0.1.0"
+description = "Hakaton project \"Red Hot Peppers\""
+authors = ["Leonid-poc <legeorg2004@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
