@@ -1,9 +1,9 @@
 import fastapi
 
-from src.auth.router import router
+from src.users.router import user_router
 
 
 app = fastapi.FastAPI(title="LifeCour$e")
 
 
-app.include_router(router)
+app.include_router(user_router)

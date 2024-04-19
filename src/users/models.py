@@ -60,6 +60,7 @@ university = Table(
     metadata,
     Column('id', Integer, autoincrement=True, primary_key=True),
     Column('name', String),
+    Column('city', String),
     Column('image', String, nullable=True),
     Column('user_id', Integer, ForeignKey('user.id'))
 )

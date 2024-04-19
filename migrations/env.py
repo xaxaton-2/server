@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-from src.auth.models import metadata as metadata_auth
+from src.users.models import metadata as metadata_auth
 from src.feed.models import metadata as metadata_feed
 from src.company.models import metadata as metadata_company
 
