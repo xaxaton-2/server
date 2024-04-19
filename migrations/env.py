@@ -9,6 +9,7 @@ from alembic import context
 
 from src.auth.models import metadata as metadata_auth
 from src.feed.models import metadata as metadata_feed
+from src.company.models import metadata as metadata_company
 
 
 # this is the Alembic Config object, which provides
@@ -26,7 +27,8 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 target_metadata = [
     metadata_auth,
-    metadata_feed
+    metadata_feed,
+    metadata_company
 ]
 
 # other values from the config, defined by the needs of env.py,
