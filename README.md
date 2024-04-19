@@ -12,3 +12,9 @@ pip install poetry
 
 poetry install
 ```
+__3. Установите миграции alembic__
+```
+alembic revision --autogenerate -m "Create DB"
+
+alembic upgrade head
+```
