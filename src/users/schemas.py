@@ -5,6 +5,5 @@ class University(BaseModel):
     id: int
     name: str
     city: str
-    image: str = None
+    image: str | None = None
     user_id: int
- 

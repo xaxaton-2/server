@@ -4,7 +4,6 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.users import models, schemas
-from src.database import engine
 
 
 async def select_all_universities(session: AsyncSession) -> List[schemas.University]:
