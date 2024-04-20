@@ -11,36 +11,59 @@ from src.database import get_session
 user_router = fastapi.APIRouter()
 
 
-@user_router.get("/universities", response_model=List[schemas.University])
+@user_router.get("/universities/", response_model=List[schemas.University])
 async def all_universities(session: AsyncSession = fastapi.Depends(get_session)):
     universities = await crud.select_all_universities(session)
     return [
-        schemas.University(id=u.id, name=u.name, city=u.city, image=u.image, user_id=u.user_id) for u in universities
+        schemas.University(
+            id=u.id,
+            name=u.name,
+            city=u.city,
+            image=u.image,
+        ) for u in universities
     ]
 
 
-@user_router.get("/faculties", response_model=List[schemas.Faculty])
+@user_router.get("/faculties/", response_model=List[schemas.Faculty])
 async def all_faculties(session: AsyncSession = fastapi.Depends(get_session)):
     faculties = await crud.select_all_faculties(session)
     return [
         schemas.Faculty(
-            id=f.id, name=f.name,
-            university={
-                "id": f.university_id,
-                "name": f.university_name,
-                "image": f.university_image,
-                "city": f.university_city,
-                "user_id": f.university_user_id
-            }) for f in faculties
+            id=f.id,
+            name=f.name,
+            university_id=f.university_id
+        ) for f in faculties
     ]
 
-# @user_router.post("")
 
-# @router.post("/register/student/", response_model=schemas.StudentCreate, tags=["reg_student"])
-# async def register_student(user: schemas.StudentCreate):
-#     async with engine.connect() as conn:
-#         async_result = await conn.stream(select(models.student))
-        
-#         async for row in async_result:
-#             print("row: %s" % (row,))
-#         return user
+@user_router.get("/departments/", response_model=List[schemas.Department])
+async def all_departmenst(session: AsyncSession = fastapi.Depends(get_session)):
+    departments = await crud.select_all_departments(session)
+    return [
+        schemas.Department(
+            id=d.id,
+            name=d.name,
+            faculty_id=d.faculty_id
+            ) for d in departments
+    ]
+
+
+@user_router.get("/groups/", response_model=List[schemas.Group])
+async def all_groups(session: AsyncSession = fastapi.Depends(get_session)):
+    groups = await crud.select_all_groups(session)
+    return [
+        schemas.Group(
+            id=g.id,
+            name=g.name,
+            course=g.course,
+            department_id=g.department_id
+            ) for g in groups
+    ]
+
+
+@user_router.post("/register/student/", response_model=schemas.StudentRead)
+async def register_student(
+    data: schemas.StudentWrite,
+    session: AsyncSession = fastapi.Depends(get_session)
+):
+    await crud.register_student(data, session)

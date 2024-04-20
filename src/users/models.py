@@ -11,6 +11,7 @@ user = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('email', String, unique=True, nullable=False),
     Column('hashed_password', String, nullable=False),
+    Column('role', Integer),  # 0 - студент, 1 - вуз, 2 - рабодатель
 
     Column('is_active', Boolean, default=True, nullable=False),
     Column('is_superuser', Boolean, default=False, nullable=False),
@@ -27,11 +28,11 @@ student = Table(
     Column('score', Integer),
     Column('image', String, nullable=True),
     Column('user_id', Integer, ForeignKey('user.id')),
-    Column('group_id', Integer, ForeignKey('group.id'))
+    Column('u_group_id', Integer, ForeignKey('u_group.id'))
 )
 
 group = Table(
-    'group',
+    'u_group',
     metadata,
     Column('id', Integer, autoincrement=True, primary_key=True),
     Column('name', String),
