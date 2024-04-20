@@ -406,6 +406,7 @@ files = [
 ]
 
 [[package]]
+<<<<<<< HEAD
 name = "passlib"
 version = "1.7.4"
 description = "comprehensive password hashing framework supporting over 30 schemes"
@@ -423,6 +424,8 @@ build-docs = ["cloud-sptheme (>=1.10.1)", "sphinx (>=1.6)", "sphinxcontrib-fullt
 totp = ["cryptography"]
 
 [[package]]
+=======
+>>>>>>> 8e6bc3c (modification and fixed bugs)
 name = "pydantic"
 version = "2.7.0"
 description = "Data validation using Python type hints"
@@ -533,6 +536,7 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+<<<<<<< HEAD
 name = "pyjwt"
 version = "2.8.0"
 description = "JSON Web Token implementation in Python"
@@ -550,6 +554,8 @@ docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
 tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
+=======
+>>>>>>> 8e6bc3c (modification and fixed bugs)
 name = "sniffio"
 version = "1.3.1"
 description = "Sniff out which async library your code is running under"
@@ -696,4 +702,8 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
+<<<<<<< HEAD
 content-hash = "6c52ecd997e290abd4a20009164c9db72b8d3c3d7cd047795ab6e4872d861ffb"
+=======
+content-hash = "7dfea3f9cc5f35b2dda1d09615b70d86b708c6622b0a4c8a73d949789f6a785e"
+>>>>>>> 8e6bc3c (modification and fixed bugs)
