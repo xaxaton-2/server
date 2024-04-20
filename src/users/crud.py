@@ -68,4 +68,45 @@ async def register_student(data: schemas.StudentWrite):
     )
     student = await database.execute(query)
 
-    return {**data.dict(), "id": student}
+    return {**data.dict(), "student_id": student}
+
+
+async def get_university(email: str) -> schemas.UniversityRead:
+    query = models.user.select().where(models.user.c.email == email)
+    u = await database.fetch_one(query)
+    if u:
+        print(u.email, u.id)
+        query = models.university.select().where(models.university.c.user_id == u.id)
+        university = await database.fetch_one(query)
+        if not university:
+            return "exist"
+        return schemas.UniversityRead(
+            email=u["email"], name=university["name"],
+            city=university["city"], image=university["image"],
+            user_id=university["user_id"]
+        )
+    else:
+        return None
+
+
+async def register_university(data: schemas.UniversityWrite):
+    university = await get_university(data.email)
+    if university is not None:
+        return None
+    query = models.user.insert().values(
+            email=data.email,
+            hashed_password=utils.hash_password(data.password),
+            role=1, is_active=True,
+            is_superuser=False,
+            is_verified=True
+        )
+    user = await database.execute(query)
+    query = models.university.insert().values(
+        name=data.name,
+        city=data.city,
+        image=data.image,
+        user_id=user,
+    )
+    university = await database.execute(query)
+
+    return {**data.dict(), "university_id": university}

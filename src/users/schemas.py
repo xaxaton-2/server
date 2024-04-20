@@ -45,3 +45,19 @@ class StudentWrite(Student):
 class StudentRead(Student):
     id: int
     score: int | None = 0
+
+
+class UniversityWrite(BaseModel):
+    name: str
+    city: str
+    image: Optional[str] = None
+    email: str
+    password: str
+
+
+class UniversityRead(BaseModel):
+    name: str
+    city: str
+    image: Optional[str] = None
+    email: str
+    user_id: int

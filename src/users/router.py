@@ -69,3 +69,13 @@ async def register_student(
     if student is None:
         raise fastapi.HTTPException(status_code=403, detail="Email exists")
     return student
+
+
+@user_router.post("/register/university/")
+async def register_university(
+    data: schemas.UniversityWrite,
+):
+    university = await crud.register_university(data)
+    if university is None:
+        raise fastapi.HTTPException(status_code=403, detail="Email exists")
+    return university
