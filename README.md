@@ -12,7 +12,7 @@ cd server
 ```
 __3. Установите Poetry и зависимости проекта__
 ```
-pip install poetry
+pip install poetry databases aiosqlite
 
 poetry shell
 
