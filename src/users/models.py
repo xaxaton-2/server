@@ -25,7 +25,7 @@ student = Table(
     Column('name', String, nullable=False),
     Column('surname', String, nullable=False),
     Column('patronymic', String, nullable=True),
-    Column('score', Integer),
+    Column('score', Integer, default=0),
     Column('image', String, nullable=True),
     Column('user_id', Integer, ForeignKey('user.id')),
     Column('u_group_id', Integer, ForeignKey('u_group.id'))

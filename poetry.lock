@@ -363,6 +363,30 @@ test = ["certifi", "pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-co
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
+name = "databases"
+version = "0.9.0"
+description = "Async database support for Python."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "databases-0.9.0-py3-none-any.whl", hash = "sha256:9ee657c9863b34f8d3a06c06eafbe1bda68af2a434b56996312edf1f1c0b6297"},
+    {file = "databases-0.9.0.tar.gz", hash = "sha256:d2f259677609bf187737644c95fa41701072e995dfeb8d2882f335795c5b61b0"},
+]
+
+[package.dependencies]
+sqlalchemy = ">=2.0.7"
+
+[package.extras]
+aiomysql = ["aiomysql"]
+aiopg = ["aiopg"]
+aiosqlite = ["aiosqlite"]
+asyncmy = ["asyncmy"]
+asyncpg = ["asyncpg"]
+mysql = ["aiomysql"]
+postgresql = ["asyncpg"]
+sqlite = ["aiosqlite"]
+
+[[package]]
 name = "dnspython"
 version = "2.6.1"
 description = "DNS toolkit"
@@ -970,4 +994,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a1bfe2060affb9775850f41a081d76b824929a8fafdc9d53f5fafcabbd6ff041"
+content-hash = "230a7bd10e6ed70a199a02591b4c883d61384c98a2f99be8ef67ea5ffc878821"

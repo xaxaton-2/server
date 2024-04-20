@@ -30,18 +30,18 @@ class Group(BaseModel):
 
 
 class Student(BaseModel):
+    email: str
     name: str
     surname: str
     patronymic: Optional[str] = None
     group_id: int
+    image: Optional[str] = None
 
 
 class StudentWrite(Student):
-    email: str
     password: str
 
 
 class StudentRead(Student):
     id: int
-    score: int
-    image: Optional[str] = None
+    score: int | None = 0

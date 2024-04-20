@@ -61,9 +61,11 @@ async def all_groups(session: AsyncSession = fastapi.Depends(get_session)):
     ]
 
 
-@user_router.post("/register/student/", response_model=schemas.StudentRead)
+@user_router.post("/register/student/")
 async def register_student(
     data: schemas.StudentWrite,
-    session: AsyncSession = fastapi.Depends(get_session)
 ):
-    await crud.register_student(data, session)
+    student = await crud.register_student(data)
+    if student is None:
+        raise fastapi.HTTPException(status_code=403, detail="Email exists")
+    return student
