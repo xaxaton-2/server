@@ -70,24 +70,24 @@ class PostRead(BaseModel):
     event_type_id: int # Event.event_type_id
     student_id: int # Post.student_id
 
-    def __init__(
-            self,
-            city,
-            university_id,
-            faculty_id,
-            department_id,
-            group_id,
-            course,
-            event_id,
-            event_type_id,
-            student_id
-    ) -> None:
-        self.city = city
-        self.university_id = university_id
-        self.faculty_id = faculty_id
-        self.department_id = department_id
-        self.group_id = group_id
-        self.course = course
-        self.event_id = event_id
-        self.event_type_id = event_type_id
-        self.student_id = student_id
+    # def __init__(
+    #         self,
+    #         city,
+    #         university_id,
+    #         faculty_id,
+    #         department_id,
+    #         group_id,
+    #         course,
+    #         event_id,
+    #         event_type_id,
+    #         student_id
+    # ) -> None:
+    #     self.city = city
+    #     self.university_id = university_id
+    #     self.faculty_id = faculty_id
+    #     self.department_id = department_id
+    #     self.group_id = group_id
+    #     self.course = course
+    #     self.event_id = event_id
+    #     self.event_type_id = event_type_id
+    #     self.student_id = student_id

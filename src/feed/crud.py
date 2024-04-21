@@ -14,6 +14,7 @@ async def select_all_posts(session: AsyncSession) -> List[schemas_feed.PostRead]
 
     query = models_feed.post.select()
     result: List[schemas_feed.Post] = await database.execute(query)
+    print(result)
     for i in result.all():
         event_id = i["event_id"]
         student_id = i["student_id"]
@@ -30,18 +31,19 @@ async def select_all_posts(session: AsyncSession) -> List[schemas_feed.PostRead]
         university_id = resp["university_id"]
         resp = await database.execute(models_users.university.select().where(models_users.university.c.id == university_id))
         city = resp["city"]
-        post_exp: schemas_feed.PostRead = schemas_feed.PostRead(
-            city=city,
-            university_id=university_id,
-            faculty_id=faculty_id,
-            department_id=department_id,
-            group_id=group_id,
-            course=course,
-            event_id=event_id,
-            event_type_id=event_type_id,
-            student_id=student_id
+        massive.append(
+            schemas_feed.PostRead(
+                city=city,
+                university_id=university_id,
+                faculty_id=faculty_id,
+                department_id=department_id,
+                group_id=group_id,
+                course=course,
+                event_id=event_id,
+                event_type_id=event_type_id,
+                student_id=student_id
+            )
         )
-        massive.append(post_exp)
     return massive
     
 
