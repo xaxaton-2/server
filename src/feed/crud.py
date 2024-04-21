@@ -47,6 +47,15 @@ async def select_all_posts(session: AsyncSession) -> List[schemas_feed.PostRead]
     return massive
     
 
+async def insert_like_on_post(id: int):
+    query = models_feed.post.update().where(models_feed.post.c.id == id).values(likes=models_feed.post.c.likes+1)
+    print(query)
+    await database.execute(query)
+
+async def get_post(id: int) -> schemas_feed.Post:
+    return database.fetch_one(models_feed.post.select().where(models_feed.post.c.id == id))
+
+
 async def select_all_events(session: AsyncSession) -> List[schemas_feed.Event]:
     result = await session.execute(select(models_feed.event))
     return result.all()

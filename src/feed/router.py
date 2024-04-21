@@ -15,3 +15,10 @@ feed_router = fastapi.APIRouter()
 async def all_posts(session: AsyncSession = fastapi.Depends(get_session)):
     posts = await crud.select_all_posts(session)
     return posts
+
+@feed_router.post("/posts/{id}/likes", response_model=schemas.Post)
+async def add_likes(id: int):
+    await crud.insert_like_on_post(id)
+    post = await crud.get_post(id)
+    return post
+
