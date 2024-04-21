@@ -59,6 +59,11 @@ class PostCreate(BaseModel):
     hashtags: str # Post.hashtags
     event_id: int # Post.event_id
 
+class EventCreate(BaseModel):
+    name: str # Event.name
+    date: datetime # Event.date
+    event_type_id: int # Event.event_type
+
 class PostRead(BaseModel):
     city: str # University.city
     university_id: int # Faculty.university_id

@@ -27,5 +27,11 @@ async def add_post(data: schemas.PostCreate, request: fastapi.Request):
     post = await crud.register_post(data, request)
     if post:
         return {"status": "success"}
-    else:
-        return {"status": "error"}
+    return {"status": "error"}
+
+@feed_router.post("/events/")
+async def add_event(data: schemas.EventCreate, request: fastapi.Request):
+    event = await crud.register_event(data, request)
+    if event:
+        return {"status": "success"}
+    return {"status": "error"}

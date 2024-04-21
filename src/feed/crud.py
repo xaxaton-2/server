@@ -4,7 +4,7 @@ from src.auth import token as jwt_token
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Request
+from fastapi import Request, HTTPException
 from src.feed import models as models_feed, schemas as schemas_feed
 from src.users import models as models_users, schemas as schemas_users
 from src.database import database
@@ -21,6 +21,7 @@ async def select_all_posts(session: AsyncSession) -> List[schemas_feed.PostRead]
         event_id = i.event_id
         student_id = i.student_id
         resp = await database.fetch_one(models_feed.event.select().where(models_feed.event.c.id == event_id))
+        if resp is None: raise HTTPException(500, "DB is not fully")
         event_type_id = resp.event_type_id
         resp = await database.fetch_one(models_users.student.select().where(models_users.student.c.id == student_id))
         group_id = resp.u_group_id
@@ -70,10 +71,24 @@ async def register_post(data: schemas_feed.PostCreate, request: Request):
         image=data.image,
         hashtags=data.hashtags,
         event_id=data.event_id,
-        student_id=user.id
+        student_id=user.student_id
     )
     return await database.execute(query)
 
+async def register_event(data: schemas_feed.EventCreate, request: Request):
+    header = request.headers.get("Authorization", None)
+    if not header:
+        return None
+    user, _ = await jwt_token.authenticate(header)
+    print(user)
+    print(user.university_id)
+    query = models_feed.event.insert().values(
+        university_id=user.university_id,
+        name=data.name,
+        date=data.date,
+        event_type_id=data.event_type_id
+    )
+    return await database.execute(query)
 
 async def select_all_events(session: AsyncSession) -> List[schemas_feed.Event]:
     result = await session.execute(select(models_feed.event))
