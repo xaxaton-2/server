@@ -22,3 +22,7 @@ async def add_likes(id: int):
     post = await crud.get_post(id)
     return post
 
+@feed_router.post("/posts/")
+async def add_post(data: schemas.PostCreate, request: fastapi.Request):
+    await crud.register_post(data, request)
+    return {"status": "success"}

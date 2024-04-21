@@ -1,8 +1,10 @@
 from typing import List
 
+from src.auth import token as jwt_token
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from fastapi import Request
 from src.feed import models as models_feed, schemas as schemas_feed
 from src.users import models as models_users, schemas as schemas_users
 from src.database import database
@@ -55,6 +57,21 @@ async def insert_like_on_post(id: int):
 async def get_post(id: int) -> schemas_feed.Post:
     return database.fetch_one(models_feed.post.select().where(models_feed.post.c.id == id))
 
+
+async def register_post(data: schemas_feed.PostCreate, request: Request):
+    header = request.headers.get("Authorization", None)
+    if not header:
+        return None
+    user, _ = await jwt_token.authenticate(header)
+
+    query = models_feed.post.insert().values(
+        text=data["text"],
+        image=data["image"],
+        hashtags=data["hashtags"],
+        event_id=data["event_id"],
+        student_id=user.id
+    )
+    await database.execute(query)
 
 async def select_all_events(session: AsyncSession) -> List[schemas_feed.Event]:
     result = await session.execute(select(models_feed.event))
