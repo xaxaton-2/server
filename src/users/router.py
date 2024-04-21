@@ -160,7 +160,8 @@ async def all_students(
     course: int = None, department_id: int = None,
     session: AsyncSession = fastapi.Depends(get_session)
 ):
-    pass
+    students = await crud.get_all_students()
+    return students
 
 
 @user_router.get("/students/{id}/")

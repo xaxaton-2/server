@@ -62,6 +62,17 @@ async def get_student_by_id(id: int) -> schemas.StudentRead:
         image=student["image"], score=student["score"]
     )
 
+async def get_all_students() -> List[schemas.StudentRead]:
+    query = select(models.student, models.user).join(models.user, models.student.c.user_id == models.user.c.id)
+    students = await database.fetch_all(query)
+    return [schemas.StudentRead(
+        id=student["id"], email=student["email"],
+        name=student["name"], surname=student["surname"],
+        patronymic=student["patronymic"], group_id=student["u_group_id"],
+        image=student["image"], score=student["score"]
+    ) for student in students
+    ]
+
 
 async def register_student(data: schemas.StudentWrite):
     student = await get_student(data.email)
