@@ -6,24 +6,23 @@ __1. Клонируйте репозиторий__
 ```
 git clone https://github.com/xaxaton-2/server.git
 ```
-__2. Установите Poetry и зависимости проекта__
+__2.  Перейдите в папку проекта__
+```
+cd server
+```
+__3. Установите Poetry и зависимости проекта__
 ```
 pip install poetry
 
-poetry install
-```
-__3. Установите миграции alembic__
-```
-alembic revision --autogenerate -m "Create DB"
+poetry shell
 
-alembic upgrade head
+poetry install
 ```
 __4. Задать секреты__
 Создать .env в корне с следующим наполнением:
 ```
-SECRET_KEY = example
+SECRET_KEY=example
 ```
-
 __5. Запустить проект__
 ```
 uvicorn src.main:app --reload

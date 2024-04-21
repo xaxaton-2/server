@@ -47,6 +47,21 @@ async def get_student(email: str) -> schemas.StudentRead:
         return None
 
 
+async def get_student_by_id(id: int) -> schemas.StudentRead:
+    query = models.student.select().where(models.student.c.id == id)
+    student = await database.fetch_one(query)
+    if not student:
+        return None
+    query = models.user.select().where(models.user.c.id == student.user_id)
+    user = await database.fetch_one(query)
+    return schemas.StudentRead(
+        id=student["id"], email=user["email"],
+        name=student["name"], surname=student["surname"],
+        patronymic=student["patronymic"], group_id=student["u_group_id"],
+        image=student["image"], score=student["score"]
+    )
+
+
 async def register_student(data: schemas.StudentWrite):
     student = await get_student(data.email)
     if student is not None:
@@ -64,6 +79,7 @@ async def register_student(data: schemas.StudentWrite):
         surname=data.surname,
         patronymic=data.patronymic,
         image=data.image,
+        score=0,
         user_id=user,
         u_group_id=data.group_id,
     )

@@ -25,11 +25,11 @@ async def all_universities(session: AsyncSession = fastapi.Depends(get_session))
     ]
 
 
-@user_router.get("/faculties/", response_model=List[schemas.Faculty])
+@user_router.get("/faculties/", response_model=List[schemas.FacultyRead])
 async def all_faculties(session: AsyncSession = fastapi.Depends(get_session)):
     faculties = await crud.select_all_faculties(session)
     return [
-        schemas.Faculty(
+        schemas.FacultyRead(
             id=f.id,
             name=f.name,
             university_id=f.university_id
@@ -116,3 +116,28 @@ async def login(data: schemas.Login):
     # if user.hashed_password != utils.hash_password(data.password):
     #     raise fastapi.HTTPException(status_code=403, detail="Incorrect pwd")
     return token.generate_jwt_token(user.id)
+
+
+# @user_router.get("/students/")
+# async def all_students(
+#     city: str = None, university_id: int = None, faculty_id: int = None,
+#     course: int = None, department_id: int = None,
+#     session: AsyncSession = fastapi.Depends(get_session)
+# ):
+#     pass
+    # faculties = await crud.select_all_faculties(session)
+    # return [
+    #     schemas.Faculty(
+    #         id=f.id,
+    #         name=f.name,
+    #         university_id=f.university_id
+    #     ) for f in faculties
+    # ]
+
+
+@user_router.get("/students/{id}/")
+async def get_student(id: int):
+    student = await crud.get_student_by_id(id)
+    if not student:
+        raise fastapi.HTTPException(status_code=404, detail="Student not found")
+    return student
