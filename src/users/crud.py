@@ -74,6 +74,7 @@ async def get_all_students(**kwargs) -> List[schemas.StudentRead]:
         .join(models.department, models.group.c.department_id == models.department.c.id)
         .join(models.faculty, models.department.c.faculty_id == models.faculty.c.id)
         .join(models.university, models.faculty.c.university_id == models.university.c.id)
+        .order_by(models.student.c.score.desc())
     )
     if kwargs["city"]:
         query = query.filter(models.university.c.city == kwargs["city"].title())
