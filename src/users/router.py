@@ -153,21 +153,14 @@ async def auth(data: schemas.Auth):
         response["company"] = profile
     return response
 
-# @user_router.get("/students/")
-# async def all_students(
-#     city: str = None, university_id: int = None, faculty_id: int = None,
-#     course: int = None, department_id: int = None,
-#     session: AsyncSession = fastapi.Depends(get_session)
-# ):
-#     pass
-    # faculties = await crud.select_all_faculties(session)
-    # return [
-    #     schemas.Faculty(
-    #         id=f.id,
-    #         name=f.name,
-    #         university_id=f.university_id
-    #     ) for f in faculties
-    # ]
+
+@user_router.get("/students/")
+async def all_students(
+    city: str = None, university_id: int = None, faculty_id: int = None,
+    course: int = None, department_id: int = None,
+    session: AsyncSession = fastapi.Depends(get_session)
+):
+    pass
 
 
 @user_router.get("/students/{id}/")
