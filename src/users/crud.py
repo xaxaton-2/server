@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth import utils, token as jwt_token
 from src.users import models, schemas
+from src.company import models as c_models
 from src.database import database
 
 
@@ -212,3 +213,16 @@ async def create_group(data: schemas.GroupCreate, request: Request):
     new_group = await database.execute(query)
 
     return {**data.dict(), "group_id": new_group}
+
+
+async def get_user_profile(id: int, role: int):
+    if role == 0:
+        query = models.student.select().where(models.student.c.user_id == id)
+    elif role == 1:
+        query = models.university.select().where(models.university.c.user_id == id)
+    elif role == 2:
+        query = c_models.company.select().where(c_models.company.c.user_id == id)
+    else:
+        return None
+    profile = await database.fetch_one(query)
+    return profile

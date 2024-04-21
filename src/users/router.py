@@ -115,7 +115,21 @@ async def login(data: schemas.Login):
     # need to add in prod
     # if user.hashed_password != utils.hash_password(data.password):
     #     raise fastapi.HTTPException(status_code=403, detail="Incorrect pwd")
-    return token.generate_jwt_token(user.id)
+    profile = await crud.get_user_profile(user.id, user.role)
+    response = {
+        "token": token.generate_jwt_token(user.id),
+        "user": {
+            "id": user.id,
+            "email": user.email,
+        }
+    }
+    if user.role == 0:
+        response["student"] = profile
+    elif user.role == 1:
+        response["university"] = profile
+    elif user.role == 2:
+        response["company"] = profile
+    return response
 
 
 # @user_router.get("/students/")
