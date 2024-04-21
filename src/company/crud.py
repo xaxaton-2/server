@@ -35,7 +35,6 @@ async def register_company(data: schemas.CompanyCreate):
         )
     user = await database.execute(query)
     query = c_models.company.insert().values(
-        city=data.city,
         name=data.name,
         image=data.image,
         user_id=user

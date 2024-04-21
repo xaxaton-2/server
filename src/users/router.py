@@ -121,6 +121,7 @@ async def login(data: schemas.Login):
         "user": {
             "id": user.id,
             "email": user.email,
+            "role": user.role,
         }
     }
     if user.role == 0:
