@@ -146,3 +146,53 @@ async def create_faculty(data: schemas.Faculty, request: Request):
     new_faculty = await database.execute(query)
 
     return {**data.dict(), "faculty_id": new_faculty}
+
+
+async def create_department(data: schemas.DepartmentCreate, request: Request):
+    header = request.headers.get("Authorization", None)
+    if not header:
+        return None
+    user, _ = await jwt_token.authenticate(header)
+
+    query = models.university.select().where(models.university.c.user_id == user.id)
+    university = await database.fetch_one(query)
+    if not university:
+        raise HTTPException(status_code=403, detail="No root")
+    query = models.faculty.select().where(models.faculty.c.university_id == university.id)
+    faculty = await database.fetch_one(query)
+    if not faculty:
+        raise HTTPException(status_code=403, detail="No root")
+
+    query = models.department.insert().values(
+        name=data.name, faculty_id=faculty.id
+    )
+    new_department = await database.execute(query)
+
+    return {**data.dict(), "department_id": new_department}
+
+
+async def create_group(data: schemas.GroupCreate, request: Request):
+    header = request.headers.get("Authorization", None)
+    if not header:
+        return None
+    user, _ = await jwt_token.authenticate(header)
+
+    query = models.university.select().where(models.university.c.user_id == user.id)
+    university = await database.fetch_one(query)
+    if not university:
+        raise HTTPException(status_code=403, detail="No root")
+    query = models.faculty.select().where(models.faculty.c.university_id == university.id)
+    faculty = await database.fetch_one(query)
+    if not faculty:
+        raise HTTPException(status_code=403, detail="No root")
+    query = models.department.select().where(models.department.c.faculty_id == faculty.id)
+    department = await database.fetch_one(query)
+    if not department:
+        raise HTTPException(status_code=403, detail="No root")
+
+    query = models.group.insert().values(
+        name=data.name, course=data.course, department_id=department.id
+    )
+    new_group = await database.execute(query)
+
+    return {**data.dict(), "group_id": new_group}

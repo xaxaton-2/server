@@ -25,11 +25,20 @@ class Department(BaseModel):
     faculty_id: int
 
 
+class DepartmentCreate(BaseModel):
+    name: str
+
+
 class Group(BaseModel):
     id: int
     name: str
     course: int = 1
     department_id: int
+
+
+class GroupCreate(BaseModel):
+    name: str
+    course: int
 
 
 class Student(BaseModel):
