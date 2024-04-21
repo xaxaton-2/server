@@ -27,6 +27,7 @@ class Department(BaseModel):
 
 class DepartmentCreate(BaseModel):
     name: str
+    faculty_id: int
 
 
 class Group(BaseModel):
@@ -39,6 +40,7 @@ class Group(BaseModel):
 class GroupCreate(BaseModel):
     name: str
     course: int
+    department_id: int
 
 
 class Student(BaseModel):
