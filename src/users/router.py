@@ -3,6 +3,7 @@ from typing import List
 import fastapi
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.auth import token
 from src.users import schemas
 from src.users import crud
 from src.database import get_session
@@ -36,6 +37,14 @@ async def all_faculties(session: AsyncSession = fastapi.Depends(get_session)):
     ]
 
 
+@user_router.post("/faculties/")
+async def create_faculty(data: schemas.Faculty, request: fastapi.Request):
+    faculty = await crud.create_faculty(data, request)
+    if not faculty:
+        raise fastapi.HTTPException(status_code=403, detail="Not authorized")
+    return faculty
+
+
 @user_router.get("/departments/", response_model=List[schemas.Department])
 async def all_departmenst(session: AsyncSession = fastapi.Depends(get_session)):
     departments = await crud.select_all_departments(session)
@@ -62,9 +71,7 @@ async def all_groups(session: AsyncSession = fastapi.Depends(get_session)):
 
 
 @user_router.post("/register/student/")
-async def register_student(
-    data: schemas.StudentWrite,
-):
+async def register_student(data: schemas.StudentWrite):
     student = await crud.register_student(data)
     if student is None:
         raise fastapi.HTTPException(status_code=403, detail="Email exists")
@@ -72,10 +79,16 @@ async def register_student(
 
 
 @user_router.post("/register/university/")
-async def register_university(
-    data: schemas.UniversityWrite,
-):
+async def register_university(data: schemas.UniversityWrite):
     university = await crud.register_university(data)
     if university is None:
         raise fastapi.HTTPException(status_code=403, detail="Email exists")
     return university
+
+
+@user_router.post("/login/")
+async def login(data: schemas.Login):
+    user = await crud.get_user_by_email(data.email)
+    if user is None:
+        raise fastapi.HTTPException(status_code=403, detail="User does not exist")
+    return token.generate_jwt_token(user.id)

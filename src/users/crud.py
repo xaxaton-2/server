@@ -1,9 +1,10 @@
 from typing import List
 
+from fastapi import Request, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.auth import utils
+from src.auth import utils, token as jwt_token
 from src.users import models, schemas
 from src.database import database
 
@@ -75,7 +76,6 @@ async def get_university(email: str) -> schemas.UniversityRead:
     query = models.user.select().where(models.user.c.email == email)
     u = await database.fetch_one(query)
     if u:
-        print(u.email, u.id)
         query = models.university.select().where(models.university.c.user_id == u.id)
         university = await database.fetch_one(query)
         if not university:
@@ -110,3 +110,39 @@ async def register_university(data: schemas.UniversityWrite):
     university = await database.execute(query)
 
     return {**data.dict(), "university_id": university}
+
+
+async def get_user_by_id(id: int):
+    query = models.user.select().where(models.user.c.id == id)
+    user = await database.fetch_one(query)
+    if user is None:
+        return None
+    return user
+
+
+async def get_user_by_email(email: str):
+    query = models.user.select().where(models.user.c.email == email)
+    user = await database.fetch_one(query)
+    if user is None:
+        return None
+    return user
+
+
+async def create_faculty(data: schemas.Faculty, request: Request):
+    header = request.headers.get("Authorization", None)
+    if not header:
+        return None
+    user, _ = await jwt_token.authenticate(header)
+
+    query = models.university.select().where(models.university.c.user_id == user.id)
+    university = await database.fetch_one(query)
+
+    if not university:
+        raise HTTPException(status_code=403, detail="No root")
+
+    query = models.faculty.insert().values(
+        name=data.name, university_id=university.id
+    )
+    new_faculty = await database.execute(query)
+
+    return {**data.dict(), "faculty_id": new_faculty}

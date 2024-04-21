@@ -11,8 +11,11 @@ class University(BaseModel):
 
 
 class Faculty(BaseModel):
-    id: int
     name: str
+
+
+class FacultyRead(Faculty):
+    id: int
     university_id: int
 
 
@@ -61,3 +64,8 @@ class UniversityRead(BaseModel):
     image: Optional[str] = None
     email: str
     user_id: int
+
+
+class Login(BaseModel):
+    email: str
+    password: str
