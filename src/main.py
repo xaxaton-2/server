@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.users.router import user_router
 from src.company.router import company_router
+from src.feed.router import feed_router
 
 
 app = fastapi.FastAPI(title="LifeCour$e")
@@ -17,3 +18,4 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(company_router)
+app.include_router(feed_router)

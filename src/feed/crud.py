@@ -13,9 +13,9 @@ async def select_all_posts(session: AsyncSession) -> List[schemas_feed.PostRead]
     massive: List[schemas_feed.PostRead] = []
 
     query = models_feed.post.select()
-    result: List[schemas_feed.Post] = await database.execute(query)
-    print(result)
-    for i in result.all():
+    result: List[schemas_feed.Post] = await database.fetch_all(query)
+    print(result, query)
+    for i in result:
         event_id = i["event_id"]
         student_id = i["student_id"]
         resp = await database.execute(models_feed.event.select().where(models_feed.event.c.id == event_id))
