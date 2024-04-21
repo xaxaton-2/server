@@ -62,8 +62,29 @@ async def get_student_by_id(id: int) -> schemas.StudentRead:
         image=student["image"], score=student["score"]
     )
 
-async def get_all_students() -> List[schemas.StudentRead]:
-    query = select(models.student, models.user).join(models.user, models.student.c.user_id == models.user.c.id)
+async def get_all_students(**kwargs) -> List[schemas.StudentRead]:
+    query = (
+        select(
+            models.student, models.user,
+            models.group, models.university,
+            models.department, models.faculty
+        )
+        .join(models.user, models.student.c.user_id == models.user.c.id)
+        .join(models.group, models.student.c.u_group_id == models.group.c.id)
+        .join(models.department, models.group.c.department_id == models.department.c.id)
+        .join(models.faculty, models.department.c.faculty_id == models.faculty.c.id)
+        .join(models.university, models.faculty.c.university_id == models.university.c.id)
+    )
+    if kwargs["city"]:
+        query = query.filter(models.university.c.city == kwargs["city"].title())
+    if kwargs["u_id"]:
+        query = query.filter(models.university.c.id == kwargs["u_id"])
+    if kwargs["f_id"]:
+        query = query.filter(models.faculty.c.id == kwargs["f_id"])
+    if kwargs["course"]:
+        query = query.filter(models.group.c.course == kwargs["course"])
+    if kwargs["d_id"]:
+        query = query.filter(models.department.c.id == kwargs["d_id"])
     students = await database.fetch_all(query)
     return [schemas.StudentRead(
         id=student["id"], email=student["email"],

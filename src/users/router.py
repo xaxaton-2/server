@@ -160,7 +160,9 @@ async def all_students(
     course: int = None, department_id: int = None,
     session: AsyncSession = fastapi.Depends(get_session)
 ):
-    students = await crud.get_all_students()
+    students = await crud.get_all_students(
+        city=city, u_id=university_id, f_id=faculty_id, course=course, d_id=department_id
+    )
     return students
 
 
