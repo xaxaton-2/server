@@ -80,3 +80,7 @@ class UniversityRead(BaseModel):
 class Login(BaseModel):
     email: str
     password: str
+
+
+class Auth(BaseModel):
+    token: str

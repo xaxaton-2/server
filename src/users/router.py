@@ -133,6 +133,26 @@ async def login(data: schemas.Login):
     return response
 
 
+@user_router.post("/auth/")
+async def auth(data: schemas.Auth):
+    user = await crud.get_user_by_token(data.token)
+    profile = await crud.get_user_profile(user.id, user.role)
+    response = {
+        "token": token.generate_jwt_token(user.id),
+        "user": {
+            "id": user.id,
+            "email": user.email,
+            "role": user.role,
+        }
+    }
+    if user.role == 0:
+        response["student"] = profile
+    elif user.role == 1:
+        response["university"] = profile
+    elif user.role == 2:
+        response["company"] = profile
+    return response
+
 # @user_router.get("/students/")
 # async def all_students(
 #     city: str = None, university_id: int = None, faculty_id: int = None,

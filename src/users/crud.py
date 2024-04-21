@@ -179,6 +179,11 @@ async def create_department(data: schemas.DepartmentCreate, request: Request):
     return {**data.dict(), "department_id": new_department}
 
 
+async def get_user_by_token(token: str):
+    user, _ = await jwt_token.authenticate(token)
+    return user
+
+
 async def create_group(data: schemas.GroupCreate, request: Request):
     header = request.headers.get("Authorization", None)
     if not header:
