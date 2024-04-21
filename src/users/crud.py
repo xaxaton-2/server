@@ -11,8 +11,29 @@ from src.database import database
 
 
 async def select_all_universities(session: AsyncSession) -> List[schemas.University]:
-    result = await session.execute(select(models.university))
-    return result.all()
+    query = (
+        select(
+            models.student, models.user,
+            models.group, models.university,
+            models.department, models.faculty
+        )
+        .join(models.user, models.student.c.user_id == models.user.c.id)
+        .join(models.group, models.student.c.u_group_id == models.group.c.id)
+        .join(models.department, models.group.c.department_id == models.department.c.id)
+        .join(models.faculty, models.department.c.faculty_id == models.faculty.c.id)
+        .join(models.university, models.faculty.c.university_id == models.university.c.id)
+        .order_by(models.university.c.id.desc())
+    )
+    response = await database.fetch_all(query)
+    score_dict = dict()
+    for i in response:
+        if i.university_id not in score_dict:
+            score_dict[i.university_id] = 0
+        score_dict[i.university_id] += i.score
+
+    result = await database.fetch_all(models.university.select())
+    # (score_dict[i.id] if i.id in score_dict else 0)
+    return [{**dict(i), "score": (score_dict[i.id] if i.id in score_dict else 0)} for i in result]
 
 
 async def select_all_faculties(session: AsyncSession) -> List[schemas.Faculty]:

@@ -8,6 +8,7 @@ class University(BaseModel):
     name: str
     city: str
     image: Optional[str] = None
+    score: int
 
 
 class Faculty(BaseModel):

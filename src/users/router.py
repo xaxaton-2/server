@@ -17,10 +17,11 @@ async def all_universities(session: AsyncSession = fastapi.Depends(get_session))
     universities = await crud.select_all_universities(session)
     return [
         schemas.University(
-            id=u.id,
-            name=u.name,
-            city=u.city,
-            image=u.image,
+            id=u.get("id"),
+            name=u.get("name"),
+            city=u.get("city"),
+            image=u.get("image"),
+            score=u.get("score")
         ) for u in universities
     ]
 
